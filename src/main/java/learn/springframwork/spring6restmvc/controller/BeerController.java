@@ -32,11 +32,11 @@ public class BeerController {
         return beerService.listBeers();
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    Beer getBeerById(@PathVariable("id") UUID id){
+    @RequestMapping(value = "/{beerId}", method = RequestMethod.GET)
+    Beer getBeerById(@PathVariable("beerId") UUID beerId){
 
         log.debug("Controller - get the beer by ID ");
 
-        return beerService.getBeerById(id);
+        return beerService.getBeerById(beerId);
     }
 }

@@ -12,6 +12,7 @@ public class Customer {
 
     private UUID id;
     private String customerName;
+    private String version;
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
 }
