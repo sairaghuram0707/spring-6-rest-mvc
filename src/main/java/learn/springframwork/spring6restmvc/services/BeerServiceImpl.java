@@ -70,17 +70,17 @@ public class BeerServiceImpl implements BeerService {
 
         log.debug("Service Implemenation - Get beer with specific ID");
 
-//        return beerMap.get(id);
+        return beerMap.get(id);
 
-        return Beer.builder()
-                .id(id)
-                .version(1)
-                .beerName("Jamieson")
-                .beerStyle(BeerStyle.GOSE)
-                .upc("2342")
-                .price(new BigDecimal("45.33"))
-                .createdDate(LocalDateTime.now())
-                .updatedDate(LocalDateTime.now())
-                .build();
+//        return Beer.builder()
+//                .id(id)
+//                .version(1)
+//                .beerName("Jamieson")
+//                .beerStyle(BeerStyle.GOSE)
+//                .upc("2342")
+//                .price(new BigDecimal("45.33"))
+//                .createdDate(LocalDateTime.now())
+//                .updatedDate(LocalDateTime.now())
+//                .build();
     }
 }
