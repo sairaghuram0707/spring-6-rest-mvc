@@ -3,6 +3,7 @@ package learn.springframwork.spring6restmvc.controller;
 import learn.springframwork.spring6restmvc.model.Beer;
 import learn.springframwork.spring6restmvc.services.BeerService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,7 +16,7 @@ import java.util.UUID;
 // Lombok Logging Purpose
 @Slf4j
 // Lombok handles adding the controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 // The return statements will be converted to JSON's (POJO's to JSON - View)
 @RestController
 // Base API Route
