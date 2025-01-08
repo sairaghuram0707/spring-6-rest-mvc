@@ -52,4 +52,21 @@ public class CustomerServiceImpl implements CustomerService {
     public List<Customer> getAllCustomers() {
         return new ArrayList<>(this.customerMap.values());
     }
+
+    @Override
+    public Customer addCustomer(Customer customer) {
+
+        // DB Operation Mock
+        Customer savedCustomer = Customer.builder()
+                .id(UUID.randomUUID())
+                .version("3.4.6")
+                .customerName(customer.getCustomerName())
+                .createdDate(LocalDateTime.now())
+                .lastModifiedDate(LocalDateTime.now())
+                .build();
+
+        this.customerMap.put(customer.getId(), savedCustomer);
+
+        return savedCustomer;
+    }
 }

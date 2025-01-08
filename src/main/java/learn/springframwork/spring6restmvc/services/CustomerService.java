@@ -10,4 +10,6 @@ public interface CustomerService {
     Customer findCustomerById(UUID id);
 
     List<Customer> getAllCustomers();
+
+    Customer addCustomer(Customer customer);
 }
