@@ -4,11 +4,11 @@ import learn.springframwork.spring6restmvc.model.Beer;
 import learn.springframwork.spring6restmvc.services.BeerService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -25,18 +25,29 @@ public class BeerController {
     private final BeerService beerService;
 
     @RequestMapping(method = RequestMethod.GET)
-    List<Beer> listBeers(){
+    public List<Beer> listBeers(){
 
-        log.debug("Controller - List all the beers ");
+        log.debug("Controller - List all the beers");
 
         return beerService.listBeers();
     }
 
     @RequestMapping(value = "/{beerId}", method = RequestMethod.GET)
-    Beer getBeerById(@PathVariable("beerId") UUID beerId){
+     public Beer getBeerById(@PathVariable("beerId") UUID beerId){
 
-        log.debug("Controller - get the beer by ID ");
+        log.debug("Controller - get the beer by ID - 56688");
 
         return beerService.getBeerById(beerId);
     }
+
+    @PostMapping
+    public ResponseEntity<Beer> addBeer(@RequestBody Beer beer){
+
+        log.debug("Controller - add Beer with ID - " + beer.getId());
+
+        Beer savedBeer = beerService.addBeer(beer);
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
 }
