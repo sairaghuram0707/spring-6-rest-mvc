@@ -4,6 +4,7 @@ import learn.springframwork.spring6restmvc.model.Beer;
 import learn.springframwork.spring6restmvc.model.BeerStyle;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -68,7 +69,7 @@ public class BeerServiceImpl implements BeerService {
     @Override
     public Beer getBeerById(UUID id) {
 
-        log.debug("Service Implemenation - Get beer with specific ID");
+        log.debug("Service Implementation - Get beer with specific ID");
 
         return beerMap.get(id);
     }
@@ -76,7 +77,7 @@ public class BeerServiceImpl implements BeerService {
     @Override
     public Beer addBeer(Beer beer) {
 
-        log.debug("Service Implemenation - Create beer with specific " + beer.getId());
+        log.debug("Service Implementation - Create beer with specific " + beer.getId());
 
         // DB operation
         Beer savedBeer =  Beer.builder()
@@ -93,5 +94,62 @@ public class BeerServiceImpl implements BeerService {
         beerMap.put(savedBeer.getId(), savedBeer);
 
         return savedBeer;
+    }
+
+    @Override
+    public void updateBeerById(UUID beerId, Beer beer) {
+
+        log.debug("Service Implementation - Update beer with specific " + beer.getId());
+
+        Beer existingBeer = beerMap.get(beerId);
+
+        existingBeer.setBeerName(beer.getBeerName());
+        existingBeer.setBeerStyle(beer.getBeerStyle());
+        existingBeer.setPrice(beer.getPrice());
+        existingBeer.setVersion(beer.getVersion());
+        existingBeer.setUpc(beer.getUpc());
+        existingBeer.setQuantityOnHand(beer.getQuantityOnHand());
+        // Created and Updated Times handled
+        existingBeer.setCreatedDate(existingBeer.getCreatedDate());
+        existingBeer.setUpdatedDate(LocalDateTime.now());
+
+        beerMap.put(existingBeer.getId(), existingBeer);
+    }
+
+    @Override
+    public void deleteBeerById(UUID beerId) {
+
+        log.debug("Service Implementation - Delete beer with specific " + beerId);
+
+        beerMap.remove(beerId);
+    }
+
+    @Override
+    public void patchBeerById(UUID beerId, Beer beer) {
+
+        log.debug("Service Implementation - Patch beer with specific " + beerId);
+
+        Beer existing = beerMap.get(beerId);
+
+        if (StringUtils.hasText(beer.getBeerName())){
+            existing.setBeerName(beer.getBeerName());
+        }
+
+        if (beer.getBeerStyle() != null) {
+            existing.setBeerStyle(beer.getBeerStyle());
+        }
+
+        if (beer.getPrice() != null) {
+            existing.setPrice(beer.getPrice());
+        }
+
+        if (beer.getQuantityOnHand() != null){
+            existing.setQuantityOnHand(beer.getQuantityOnHand());
+        }
+
+        if (StringUtils.hasText(beer.getUpc())) {
+            existing.setUpc(beer.getUpc());
+        }
+
     }
 }

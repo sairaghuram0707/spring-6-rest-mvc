@@ -33,8 +33,9 @@ public class CustomerController {
 
         Customer savedCustomer = this.customerService.addCustomer(customer);
 
+        // Response Headers for POST Request
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Location","/api/v1/customer" + savedCustomer.getId());
+        httpHeaders.add("Location","/api/v1/customer/" + savedCustomer.getId());
 
         return new ResponseEntity<>(httpHeaders, HttpStatus.CREATED);
     }

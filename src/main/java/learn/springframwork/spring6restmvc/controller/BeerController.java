@@ -48,9 +48,39 @@ public class BeerController {
 
         // Response headers for POST Request
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Location","api/v1/beer/" + savedBeer.getId().toString());
+        headers.add("Location","/api/v1/beer/" + savedBeer.getId().toString());
 
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{beerId}")
+    public ResponseEntity<Beer> updateById(@PathVariable("beerId") UUID beerId, @RequestBody Beer beer){
+
+        log.debug("Controller - update Beer with ID - " + beer.getId());
+
+        beerService.updateBeerById(beerId,beer);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/{beerId}")
+    public ResponseEntity<Beer> deleteById(@PathVariable("beerId") UUID beerId){
+
+        log.debug("Controller - Delete Beer with ID - " + beerId);
+
+        beerService.deleteBeerById(beerId);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PatchMapping("/{beerId}")
+    public ResponseEntity<Beer> patchBeerById(@PathVariable("beerId") UUID beerId, @RequestBody Beer beer){
+
+        log.debug("Controller - patch Beer with ID - " + beerId);
+
+        beerService.patchBeerById(beerId,beer);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }
