@@ -20,11 +20,15 @@ import java.util.UUID;
 // The return statements will be converted to JSON's (POJO's to JSON - View)
 @RestController
 // Base API Route
-@RequestMapping("/api/v1/beer")
+//@RequestMapping("/api/v1/beer")
 public class BeerController {
+
+    public static final String BEER_PATH = "/api/v1/beer";
+    public static final String BEER_PATH_WITH_ID = BEER_PATH + "/{beerId}";
+
     private final BeerService beerService;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping(BEER_PATH)
     public List<Beer> listBeers(){
 
         log.debug("Controller - List all the beers");
@@ -32,7 +36,7 @@ public class BeerController {
         return beerService.listBeers();
     }
 
-    @RequestMapping(value = "/{beerId}", method = RequestMethod.GET)
+    @GetMapping(BEER_PATH_WITH_ID)
      public Beer getBeerById(@PathVariable("beerId") UUID beerId){
 
         log.debug("Controller - get the beer by ID - 56688");
@@ -40,7 +44,7 @@ public class BeerController {
         return beerService.getBeerById(beerId);
     }
 
-    @PostMapping
+    @PostMapping(BEER_PATH)
     public ResponseEntity<Beer> addBeer(@RequestBody Beer beer){
 
         log.debug("Controller - add Beer with ID - " + beer.getId());
@@ -49,12 +53,12 @@ public class BeerController {
 
         // Response headers for POST Request
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Location","/api/v1/beer/" + savedBeer.getId().toString());
+        headers.add("Location",BEER_PATH + "/" + savedBeer.getId().toString());
 
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{beerId}")
+    @PutMapping(BEER_PATH_WITH_ID)
     public ResponseEntity<Beer> updateById(@PathVariable("beerId") UUID beerId, @RequestBody Beer beer){
 
         log.debug("Controller - update Beer with ID - " + beer.getId());
@@ -64,7 +68,7 @@ public class BeerController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping("/{beerId}")
+    @DeleteMapping(BEER_PATH_WITH_ID)
     public ResponseEntity<Beer> deleteById(@PathVariable("beerId") UUID beerId){
 
         log.debug("Controller - Delete Beer with ID - " + beerId);
@@ -74,7 +78,7 @@ public class BeerController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PatchMapping("/{beerId}")
+    @PatchMapping(BEER_PATH_WITH_ID)
     public ResponseEntity<Beer> patchBeerById(@PathVariable("beerId") UUID beerId, @RequestBody Beer beer){
 
         log.debug("Controller - patch Beer with ID - " + beerId);
