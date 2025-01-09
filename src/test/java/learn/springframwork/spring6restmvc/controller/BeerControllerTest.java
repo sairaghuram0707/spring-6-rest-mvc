@@ -39,13 +39,13 @@ class BeerControllerTest {
     @MockitoBean
     BeerService beerService;
 
-    BeerServiceImpl beerServiceImpl;
-
     @Captor
     ArgumentCaptor<Beer> beerArgumentCaptor;
 
     @Captor
     ArgumentCaptor<UUID> uuidArgumentCaptor;
+
+    BeerServiceImpl beerServiceImpl;
 
     @BeforeEach
     void setUp() {
