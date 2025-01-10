@@ -46,7 +46,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Optional<Customer> findCustomerById(UUID id) {
-        return Optional.of(customerMap.get(id));
+        // Doesn't send the whole stackTrace when Null Optional returned.
+        return Optional.ofNullable(customerMap.get(id));
     }
 
     @Override

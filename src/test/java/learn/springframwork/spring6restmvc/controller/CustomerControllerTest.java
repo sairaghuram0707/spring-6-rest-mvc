@@ -145,8 +145,8 @@ class CustomerControllerTest {
     @Test
     void getCustomerIdNotFound() throws Exception {
 
-        /* No stub required as Exception handled in customer Controller
-        given(customerService.findCustomerById(any(UUID.class))).willThrow(NotFoundException.class); */
+        // Stub required as Exception handled in customer Controller
+        given(customerService.findCustomerById(any(UUID.class))).willThrow(NotFoundException.class);
 
         mockMvc.perform(get(CustomerController.CUSTOMER_PATH_ID,UUID.randomUUID()))
                 .andExpect(status().isNotFound());
