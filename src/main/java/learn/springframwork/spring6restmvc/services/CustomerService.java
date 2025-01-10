@@ -3,11 +3,12 @@ package learn.springframwork.spring6restmvc.services;
 import learn.springframwork.spring6restmvc.model.Customer;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface CustomerService {
 
-    Customer findCustomerById(UUID id);
+    Optional<Customer> findCustomerById(UUID id);
 
     List<Customer> getAllCustomers();
 
