@@ -140,4 +140,12 @@ class CustomerControllerTest {
 
         assertThat(uuidCustomerCaptor.getValue()).isEqualTo(testCustomer.getId());
     }
+
+    @Test
+    void getCustomerIdNotFound() throws Exception {
+        given(customerService.findCustomerById(any(UUID.class))).willThrow(NotFoundException.class);
+
+        mockMvc.perform(get(CustomerController.CUSTOMER_PATH_ID,UUID.randomUUID()))
+                .andExpect(status().isNotFound());
+    }
 }
