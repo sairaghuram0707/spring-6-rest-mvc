@@ -24,6 +24,7 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+// Kind of Unit test(Only initializing a test splice)
 @WebMvcTest(BeerController.class)
 class BeerControllerTest {
 
