@@ -109,6 +109,22 @@ class CustomerControllerTest {
     }
 
     @Test
+    void testDeleteCustomer() throws Exception {
+        CustomerDTO testCustomer = customerServiceImpl.getAllCustomers().get(0);
+
+        given(customerService.deleteCustomerById(testCustomer.getId())).willReturn(true);
+
+        mockMvc.perform(delete(CustomerController.CUSTOMER_PATH_ID,testCustomer.getId())
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+
+        // Stub for the Customer Service sent
+        verify(customerService).deleteCustomerById(uuidCustomerCaptor.capture());
+
+        assertThat(uuidCustomerCaptor.getValue()).isEqualTo(testCustomer.getId());
+    }
+
+    @Test
     void testPatchController() throws Exception {
         CustomerDTO testCustomer = customerServiceImpl.getAllCustomers().get(0);
 
@@ -128,22 +144,6 @@ class CustomerControllerTest {
 
         assertThat(uuidCustomerCaptor.getValue()).isEqualTo(testCustomer.getId());
         assertThat("Roxs2552").isEqualTo(customerCaptor.getValue().getCustomerName());
-    }
-
-    @Test
-    void testDeleteCustomer() throws Exception {
-        CustomerDTO testCustomer = customerServiceImpl.getAllCustomers().get(0);
-
-        given(customerService.deleteCustomerById(testCustomer.getId())).willReturn(true);
-
-        mockMvc.perform(delete(CustomerController.CUSTOMER_PATH_ID,testCustomer.getId())
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent());
-
-        // Stub for the Customer Service sent
-        verify(customerService).deleteCustomerById(uuidCustomerCaptor.capture());
-
-        assertThat(uuidCustomerCaptor.getValue()).isEqualTo(testCustomer.getId());
     }
 
     @Test

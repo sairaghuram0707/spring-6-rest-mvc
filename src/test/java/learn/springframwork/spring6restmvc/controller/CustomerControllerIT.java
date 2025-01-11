@@ -80,27 +80,6 @@ class CustomerControllerIT {
     }
 
     @Test
-    void deleteCustomerByIdNotFound() {
-
-        assertThrows(NotFoundException.class,()->{
-            customerController.deleteCustomer(UUID.randomUUID());
-        });
-
-    }
-
-    @Transactional
-    @Rollback
-    @Test
-    void deleteCustomerByIdFound() {
-        Customer customer = customerRepository.findAll().get(0);
-
-        ResponseEntity responseEntity = customerController.deleteCustomer(customer.getId());
-
-        assertThat(customerRepository.findById(customer.getId())).isEmpty();
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
-    }
-
-    @Test
     void updateCustomerByIdFailed() {
         assertThrows(NotFoundException.class,()->{
             customerController.updateCustomer(
@@ -127,6 +106,27 @@ class CustomerControllerIT {
 
         CustomerDTO savedCustomer= customerController.getCustomerById(customer.getId());
         assertThat(savedCustomer.getCustomerName()).isEqualTo(CUSTOMER_NAME);
+    }
+
+    @Test
+    void deleteCustomerByIdFailed() {
+
+        assertThrows(NotFoundException.class,()->{
+            customerController.deleteCustomer(UUID.randomUUID());
+        });
+
+    }
+
+    @Transactional
+    @Rollback
+    @Test
+    void deleteCustomerByIdFound() {
+        Customer customer = customerRepository.findAll().get(0);
+
+        ResponseEntity responseEntity = customerController.deleteCustomer(customer.getId());
+
+        assertThat(customerRepository.findById(customer.getId())).isEmpty();
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
     }
 
     @Transactional

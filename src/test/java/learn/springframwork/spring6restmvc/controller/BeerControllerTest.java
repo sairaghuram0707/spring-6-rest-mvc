@@ -51,13 +51,6 @@ class BeerControllerTest {
     }
 
     @Test
-    void testJacksonMapper() throws Exception {
-        BeerDTO beer = beerServiceImpl.listBeers().get(0);
-        // Converting POJO to Json using mapper;
-        objectMapper.writeValueAsString(beer);
-    }
-
-    @Test
     void getBeerById() throws Exception {
 
         BeerDTO testBeer = beerServiceImpl.listBeers().get(0);

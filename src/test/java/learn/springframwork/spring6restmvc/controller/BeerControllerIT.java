@@ -4,7 +4,6 @@ import jakarta.transaction.Transactional;
 import learn.springframwork.spring6restmvc.entities.Beer;
 import learn.springframwork.spring6restmvc.mappers.BeerMapper;
 import learn.springframwork.spring6restmvc.model.BeerDTO;
-import learn.springframwork.spring6restmvc.model.CustomerDTO;
 import learn.springframwork.spring6restmvc.repositories.BeerRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.Rollback;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,13 +25,13 @@ import static org.mockito.ArgumentMatchers.any;
 class BeerControllerIT {
     
     @Autowired
-    private BeerController beerController;
+    BeerController beerController;
 
     @Autowired
-    private BeerRepository beerRepository;
+    BeerRepository beerRepository;
 
     @Autowired
-    private BeerMapper beerMapper;
+    BeerMapper beerMapper;
 
 
     @Test
@@ -103,13 +101,14 @@ class BeerControllerIT {
     @Test
     void updateBeerByIdFailed() {
         assertThrows(NotFoundException.class,()->{
-            beerController.updateById(UUID.randomUUID(),any());
+            beerController.updateById(UUID.randomUUID(),BeerDTO.builder().build());
         });
     }
 
-    @Test
+
     @Transactional
     @Rollback
+    @Test
     void updateBeerById() {
         final String beerName = "Test Bear Name";
         Beer beer = beerRepository.findAll().get(0);
@@ -134,9 +133,10 @@ class BeerControllerIT {
         });
     }
 
-    @Test
+
     @Transactional
     @Rollback
+    @Test
     void deleteBeerById() {
         Beer beer = beerRepository.findAll().get(0);
         ResponseEntity responseEntity = beerController.deleteById(beer.getId());
