@@ -112,8 +112,9 @@ class CustomerControllerTest {
     void testPatchController() throws Exception {
         CustomerDTO testCustomer = customerServiceImpl.getAllCustomers().get(0);
 
+        given(customerService.patchCustomerById(any(),any(UUID.class))).willReturn(Optional.of(testCustomer));
+
         Map<String, Object> patchRequestBody = new HashMap<>();
-        patchRequestBody.put("version",2);
         patchRequestBody.put("customerName","Roxs2552");
 
         mockMvc.perform(patch(CustomerController.CUSTOMER_PATH_ID,testCustomer.getId())
@@ -126,7 +127,6 @@ class CustomerControllerTest {
         verify(customerService).patchCustomerById(customerCaptor.capture(),uuidCustomerCaptor.capture());
 
         assertThat(uuidCustomerCaptor.getValue()).isEqualTo(testCustomer.getId());
-        assertThat(2).isEqualTo(customerCaptor.getValue().getVersion());
         assertThat("Roxs2552").isEqualTo(customerCaptor.getValue().getCustomerName());
     }
 

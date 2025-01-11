@@ -6,6 +6,7 @@ import learn.springframwork.spring6restmvc.repositories.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -46,6 +47,7 @@ public class CustomerServiceImplJPA implements CustomerService {
 
     @Override
     public Optional<CustomerDTO> updateCustomerById(CustomerDTO customer, UUID customerId) {
+
         AtomicReference<Optional<CustomerDTO>> atomicReference = new AtomicReference<>();
 
         // Lambda Function
@@ -69,7 +71,20 @@ public class CustomerServiceImplJPA implements CustomerService {
     }
 
     @Override
-    public void patchCustomerById(CustomerDTO customer, UUID customerId) {
-        customerRepository.save(customerMapper.DtoToCustomer(customer));
+    public Optional<CustomerDTO> patchCustomerById(CustomerDTO customer, UUID customerId) {
+
+        AtomicReference<Optional<CustomerDTO>> atomicReference = new AtomicReference<>();
+
+        // Lambda Function
+        customerRepository.findById(customerId).ifPresentOrElse(foundCustomer -> {
+            if(StringUtils.hasText(customer.getCustomerName())){
+                foundCustomer.setCustomerName(customer.getCustomerName());
+            }
+            atomicReference.set(Optional.of(customerMapper.
+                    CustomerToCustomerDto(customerRepository.save(foundCustomer))));
+        },()->{
+            atomicReference.set(Optional.empty());
+        });
+        return atomicReference.get();
     }
 }

@@ -92,12 +92,13 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void patchCustomerById(CustomerDTO customer, UUID customerId) {
+    public Optional<CustomerDTO> patchCustomerById(CustomerDTO customer, UUID customerId) {
 
         CustomerDTO existingCustomer = this.customerMap.get(customerId);
 
         if(StringUtils.hasText(customer.getCustomerName())){
             existingCustomer.setCustomerName(customer.getCustomerName());
         }
+        return Optional.of(existingCustomer);
     }
 }

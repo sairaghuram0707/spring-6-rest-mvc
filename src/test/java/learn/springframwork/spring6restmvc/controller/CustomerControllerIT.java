@@ -113,12 +113,12 @@ class CustomerControllerIT {
     @Rollback
     @Test
     void updateCustomerById() {
-        final String BEER_NAME = "Test Name";
+        final String CUSTOMER_NAME = "Test Name";
         Customer customer = customerRepository.findAll().get(0);
         CustomerDTO customerDTO = customerMapper.CustomerToCustomerDto(customer);
         customerDTO.setId(null);
         customerDTO.setVersion(null);
-        customerDTO.setCustomerName(BEER_NAME);
+        customerDTO.setCustomerName(CUSTOMER_NAME);
 
         ResponseEntity responseEntity = customerController.updateCustomer(customerDTO,customer.getId());
 
@@ -126,8 +126,33 @@ class CustomerControllerIT {
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
 
         CustomerDTO savedCustomer= customerController.getCustomerById(customer.getId());
-        assertThat(savedCustomer.getCustomerName()).isEqualTo(BEER_NAME);
+        assertThat(savedCustomer.getCustomerName()).isEqualTo(CUSTOMER_NAME);
     }
 
+    @Transactional
+    @Rollback
+    @Test
+    void patchCustomerById() {
+        final String CUSTOMER_NAME = "Test Name";
+        Customer customer = customerRepository.findAll().get(0);
+        CustomerDTO customerDTO = customerMapper.CustomerToCustomerDto(customer);
+        customerDTO.setId(null);
+        customerDTO.setVersion(null);
+        customerDTO.setCustomerName(CUSTOMER_NAME);
 
+        ResponseEntity responseEntity = customerController.patchCustomer(customerDTO,customer.getId());
+
+        assertThat(responseEntity).isNotNull();
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+
+        CustomerDTO savedCustomer= customerController.getCustomerById(customer.getId());
+        assertThat(savedCustomer.getCustomerName()).isEqualTo(CUSTOMER_NAME);
+    }
+
+    @Test
+    void patchByCustomerIdFailed() {
+        assertThrows(NotFoundException.class,()->{
+            customerController.patchCustomer(CustomerDTO.builder().build(),UUID.randomUUID());
+        });
+    }
 }
