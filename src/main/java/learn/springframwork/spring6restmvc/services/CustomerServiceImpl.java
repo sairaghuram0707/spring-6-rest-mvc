@@ -73,7 +73,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void updateCustomerById(CustomerDTO customer, UUID customerId) {
+    public Optional<CustomerDTO> updateCustomerById(CustomerDTO customer, UUID customerId) {
 
         CustomerDTO existingCustomer = this.customerMap.get(customerId);
 
@@ -81,13 +81,14 @@ public class CustomerServiceImpl implements CustomerService {
         existingCustomer.setVersion(customer.getVersion());
         existingCustomer.setLastModifiedDate(customer.getLastModifiedDate());
         existingCustomer.setCreatedDate(customer.getCreatedDate());
+
+        return Optional.of(existingCustomer);
     }
 
     @Override
-    public void deleteCustomerById(UUID customerId) {
-
+    public Boolean deleteCustomerById(UUID customerId) {
         this.customerMap.remove(customerId);
-
+        return true;
     }
 
     @Override

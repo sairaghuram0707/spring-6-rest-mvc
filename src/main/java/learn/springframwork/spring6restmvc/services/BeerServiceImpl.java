@@ -1,5 +1,6 @@
 package learn.springframwork.spring6restmvc.services;
 
+import learn.springframwork.spring6restmvc.entities.Beer;
 import learn.springframwork.spring6restmvc.model.BeerDTO;
 import learn.springframwork.spring6restmvc.model.BeerStyle;
 import lombok.extern.slf4j.Slf4j;
@@ -97,7 +98,7 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    public void updateBeerById(UUID beerId, BeerDTO beer) {
+    public Optional<BeerDTO> updateBeerById(UUID beerId, BeerDTO beer) {
 
         log.debug("Service Implementation - Update beer with specific " + beer.getId());
 
@@ -109,25 +110,19 @@ public class BeerServiceImpl implements BeerService {
         existingBeer.setVersion(beer.getVersion());
         existingBeer.setUpc(beer.getUpc());
         existingBeer.setQuantityOnHand(beer.getQuantityOnHand());
-        // Created and Updated Times handled
-        existingBeer.setCreatedDate(beer.getCreatedDate());
-        existingBeer.setUpdatedDate(beer.getUpdatedDate());
 
-        beerMap.put(existingBeer.getId(), existingBeer);
+        return Optional.empty();
     }
 
     @Override
-    public void deleteBeerById(UUID beerId) {
-
-        log.debug("Service Implementation - Delete beer with specific " + beerId);
-
+    public Boolean deleteBeerById(UUID beerId) {
         beerMap.remove(beerId);
+
+        return true;
     }
 
     @Override
     public void patchBeerById(UUID beerId, BeerDTO beer) {
-
-        log.debug("Service Implementation - Patch beer with specific " + beerId);
 
         BeerDTO existing = beerMap.get(beerId);
 

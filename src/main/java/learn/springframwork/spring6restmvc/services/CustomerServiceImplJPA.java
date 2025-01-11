@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 // Interaction With the Customer Repository Layer handled in the Implementation
@@ -38,21 +39,37 @@ public class CustomerServiceImplJPA implements CustomerService {
 
     @Override
     public CustomerDTO addCustomer(CustomerDTO customer) {
-        return null;
+        return customerMapper.CustomerToCustomerDto(
+                customerRepository.save(customerMapper.DtoToCustomer(customer))
+        );
     }
 
     @Override
-    public void updateCustomerById(CustomerDTO customer, UUID customerId) {
+    public Optional<CustomerDTO> updateCustomerById(CustomerDTO customer, UUID customerId) {
+        AtomicReference<Optional<CustomerDTO>> atomicReference = new AtomicReference<>();
 
+        // Lambda Function
+        customerRepository.findById(customerId).ifPresentOrElse(foundCustomer -> {
+            foundCustomer.setCustomerName(customer.getCustomerName());
+            atomicReference.set(Optional.of(customerMapper
+            .CustomerToCustomerDto(customerRepository.save(foundCustomer))));
+        }, () -> {
+            atomicReference.set(Optional.empty());
+        });
+
+        return atomicReference.get();
     }
 
     @Override
-    public void deleteCustomerById(UUID customerId) {
-
+    public Boolean deleteCustomerById(UUID customerId) {
+        if(customerRepository.existsById(customerId)) {
+            customerRepository.deleteById(customerId);
+            return true;
+        }   return false;
     }
 
     @Override
     public void patchCustomerById(CustomerDTO customer, UUID customerId) {
-
+        customerRepository.save(customerMapper.DtoToCustomer(customer));
     }
 }
