@@ -2,9 +2,7 @@ package learn.springframwork.spring6restmvc.bootstrap;
 
 import learn.springframwork.spring6restmvc.entities.Beer;
 import learn.springframwork.spring6restmvc.entities.Customer;
-import learn.springframwork.spring6restmvc.model.BeerDTO;
 import learn.springframwork.spring6restmvc.model.BeerStyle;
-import learn.springframwork.spring6restmvc.model.CustomerDTO;
 import learn.springframwork.spring6restmvc.repositories.BeerRepository;
 import learn.springframwork.spring6restmvc.repositories.CustomerRepository;
 import lombok.RequiredArgsConstructor;
