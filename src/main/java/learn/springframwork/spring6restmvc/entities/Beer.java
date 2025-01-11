@@ -3,7 +3,6 @@ package learn.springframwork.spring6restmvc.entities;
 import jakarta.persistence.*;
 import learn.springframwork.spring6restmvc.model.BeerStyle;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.math.BigDecimal;
