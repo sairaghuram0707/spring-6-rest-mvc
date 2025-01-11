@@ -1,9 +1,10 @@
 package learn.springframwork.spring6restmvc.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import learn.springframwork.spring6restmvc.model.Customer;
+import learn.springframwork.spring6restmvc.model.CustomerDTO;
 import learn.springframwork.spring6restmvc.services.CustomerService;
 import learn.springframwork.spring6restmvc.services.CustomerServiceImpl;
+import org.glassfish.jaxb.runtime.v2.schemagen.xmlschema.Any;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -43,7 +44,7 @@ class CustomerControllerTest {
     CustomerService customerService;
 
     @Captor
-    ArgumentCaptor<Customer> customerCaptor;
+    ArgumentCaptor<CustomerDTO> customerCaptor;
 
     @Captor
     ArgumentCaptor<UUID> uuidCustomerCaptor;
@@ -58,7 +59,7 @@ class CustomerControllerTest {
     @Test
     void getCustomerById() throws Exception {
 
-        Customer customer = customerServiceImpl.getAllCustomers().get(0);
+        CustomerDTO customer = customerServiceImpl.getAllCustomers().get(0);
 
         // Stub Declared here(Function Call and Return Value);
         given(customerService.findCustomerById(customer.getId())).willReturn(Optional.of(customer));
@@ -73,12 +74,12 @@ class CustomerControllerTest {
 
     @Test
     void testCreateCustomer() throws Exception {
-        Customer customer = customerServiceImpl.getAllCustomers().get(0);
+        CustomerDTO customer = customerServiceImpl.getAllCustomers().get(0);
         customer.setId(null);
         customer.setCustomerName(null);
 
         // Stub for Customer Service to be implemented for createCustomer
-        given(customerService.addCustomer(any(Customer.class))).willReturn(customerServiceImpl.getAllCustomers().get(1));
+        given(customerService.addCustomer(any(CustomerDTO.class))).willReturn(customerServiceImpl.getAllCustomers().get(1));
 
         mockMvc.perform(post(CustomerController.CUSTOMER_PATH)
                     .accept(MediaType.APPLICATION_JSON)
@@ -91,7 +92,7 @@ class CustomerControllerTest {
 
     @Test
     void testUpdateCustomer() throws Exception {
-        Customer testCustomer = customerServiceImpl.getAllCustomers().get(0);
+        CustomerDTO testCustomer = customerServiceImpl.getAllCustomers().get(0);
 
         mockMvc.perform(put(CustomerController.CUSTOMER_PATH_ID,testCustomer.getId())
                 .content(objectMapper.writeValueAsString(testCustomer))
@@ -108,10 +109,10 @@ class CustomerControllerTest {
 
     @Test
     void testPatchController() throws Exception {
-        Customer testCustomer = customerServiceImpl.getAllCustomers().get(0);
+        CustomerDTO testCustomer = customerServiceImpl.getAllCustomers().get(0);
 
-        Map<String,String> patchRequestBody = new HashMap<>();
-        patchRequestBody.put("version","1347");
+        Map<String, Object> patchRequestBody = new HashMap<>();
+        patchRequestBody.put("version",2);
         patchRequestBody.put("customerName","Roxs2552");
 
         mockMvc.perform(patch(CustomerController.CUSTOMER_PATH_ID,testCustomer.getId())
@@ -124,13 +125,13 @@ class CustomerControllerTest {
         verify(customerService).patchCustomerById(customerCaptor.capture(),uuidCustomerCaptor.capture());
 
         assertThat(uuidCustomerCaptor.getValue()).isEqualTo(testCustomer.getId());
-        assertThat("1347").isEqualTo(customerCaptor.getValue().getVersion());
+        assertThat(2).isEqualTo(customerCaptor.getValue().getVersion());
         assertThat("Roxs2552").isEqualTo(customerCaptor.getValue().getCustomerName());
     }
 
     @Test
     void testDeleteCustomer() throws Exception {
-        Customer testCustomer = customerServiceImpl.getAllCustomers().get(0);
+        CustomerDTO testCustomer = customerServiceImpl.getAllCustomers().get(0);
 
         mockMvc.perform(delete(CustomerController.CUSTOMER_PATH_ID,testCustomer.getId())
                 .accept(MediaType.APPLICATION_JSON))

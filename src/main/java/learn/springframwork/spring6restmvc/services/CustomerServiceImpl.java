@@ -1,6 +1,6 @@
 package learn.springframwork.spring6restmvc.services;
 
-import learn.springframwork.spring6restmvc.model.Customer;
+import learn.springframwork.spring6restmvc.model.CustomerDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -10,31 +10,31 @@ import java.util.*;
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
-    private Map<UUID,Customer> customerMap;
+    private Map<UUID, CustomerDTO> customerMap;
 
     public CustomerServiceImpl() {
         this.customerMap = new HashMap<>();
 
-        Customer c1 = Customer.builder()
+        CustomerDTO c1 = CustomerDTO.builder()
                 .id(UUID.randomUUID())
                 .customerName("Ram")
-                .version("3.4.5")
+                .version(1)
                 .createdDate(LocalDateTime.now())
                 .lastModifiedDate(LocalDateTime.now())
                 .build();
 
-        Customer c2 = Customer.builder()
+        CustomerDTO c2 = CustomerDTO.builder()
                 .id(UUID.randomUUID())
                 .customerName("Rajesh")
-                .version("3.4.6")
+                .version(1)
                 .createdDate(LocalDateTime.now())
                 .lastModifiedDate(LocalDateTime.now())
                 .build();
 
-        Customer c3 = Customer.builder()
+        CustomerDTO c3 = CustomerDTO.builder()
                 .id(UUID.randomUUID())
                 .customerName("Vivek")
-                .version("3.4.7")
+                .version(1)
                 .createdDate(LocalDateTime.now())
                 .lastModifiedDate(LocalDateTime.now())
                 .build();
@@ -45,23 +45,23 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Optional<Customer> findCustomerById(UUID id) {
+    public Optional<CustomerDTO> findCustomerById(UUID id) {
         // Doesn't send the whole stackTrace when Null Optional returned.
         return Optional.ofNullable(customerMap.get(id));
     }
 
     @Override
-    public List<Customer> getAllCustomers() {
+    public List<CustomerDTO> getAllCustomers() {
         return new ArrayList<>(this.customerMap.values());
     }
 
     @Override
-    public Customer addCustomer(Customer customer) {
+    public CustomerDTO addCustomer(CustomerDTO customer) {
 
         // DB Operation Mock
-        Customer savedCustomer = Customer.builder()
+        CustomerDTO savedCustomer = CustomerDTO.builder()
                 .id(UUID.randomUUID())
-                .version("3.4.6")
+                .version(1)
                 .customerName(customer.getCustomerName())
                 .createdDate(LocalDateTime.now())
                 .lastModifiedDate(LocalDateTime.now())
@@ -73,9 +73,9 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void updateCustomerById(Customer customer, UUID customerId) {
+    public void updateCustomerById(CustomerDTO customer, UUID customerId) {
 
-        Customer existingCustomer = this.customerMap.get(customerId);
+        CustomerDTO existingCustomer = this.customerMap.get(customerId);
 
         existingCustomer.setCustomerName(customer.getCustomerName());
         existingCustomer.setVersion(customer.getVersion());
@@ -91,16 +91,12 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void patchCustomerById(Customer customer, UUID customerId) {
+    public void patchCustomerById(CustomerDTO customer, UUID customerId) {
 
-        Customer existingCustomer = this.customerMap.get(customerId);
+        CustomerDTO existingCustomer = this.customerMap.get(customerId);
 
         if(StringUtils.hasText(customer.getCustomerName())){
             existingCustomer.setCustomerName(customer.getCustomerName());
-        }
-
-        if(StringUtils.hasText(customer.getVersion())){
-            existingCustomer.setVersion(customer.getVersion());
         }
     }
 }
