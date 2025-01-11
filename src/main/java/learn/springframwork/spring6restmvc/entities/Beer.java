@@ -1,10 +1,10 @@
 package learn.springframwork.spring6restmvc.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Version;
+import jakarta.persistence.*;
 import learn.springframwork.spring6restmvc.model.BeerStyle;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -19,11 +19,15 @@ import java.util.UUID;
 public class Beer {
 
     @Id
+    @GeneratedValue(generator = "UUID")
+    @UuidGenerator
+    @Column(length = 36,columnDefinition = "varchar", nullable = false, updatable = false)
     private UUID id;
-    private String beerName;
 
     @Version
     private Integer version;
+
+    private String beerName;
     private BeerStyle beerStyle;
     private String upc;
     private Integer quantityOnHand;
