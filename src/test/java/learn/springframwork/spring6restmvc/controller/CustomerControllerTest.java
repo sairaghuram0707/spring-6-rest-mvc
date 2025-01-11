@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import learn.springframwork.spring6restmvc.model.CustomerDTO;
 import learn.springframwork.spring6restmvc.services.CustomerService;
 import learn.springframwork.spring6restmvc.services.CustomerServiceImpl;
-import org.glassfish.jaxb.runtime.v2.schemagen.xmlschema.Any;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
