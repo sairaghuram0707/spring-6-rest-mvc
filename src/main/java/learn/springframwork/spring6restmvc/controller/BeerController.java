@@ -29,7 +29,7 @@ public class BeerController {
     private final BeerService beerService;
 
     @GetMapping(BEER_PATH)
-    public List<BeerDTO> listBeers(){
+    public List<BeerDTO> listBeers() {
 
         log.debug("Controller - List all the beers");
 
