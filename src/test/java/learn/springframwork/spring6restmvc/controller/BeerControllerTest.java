@@ -13,6 +13,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.assertj.MvcTestResult;
 
 import java.util.*;
 
@@ -161,5 +163,41 @@ class BeerControllerTest {
 
         mockMvc.perform(get(BeerController.BEER_PATH_WITH_ID,UUID.randomUUID().toString()))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void testcreateNewNullBeer() throws Exception {
+
+        BeerDTO testBeer = BeerDTO.builder().build();
+
+        given(beerService.addBeer(any(BeerDTO.class))).willReturn(beerServiceImpl.listBeers().get(0));
+
+        MvcResult mvcResult = mockMvc.perform(post(BeerController.BEER_PATH)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(testBeer)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.length()",is(6))).andReturn();
+
+
+        System.out.println(mvcResult.getResponse().getContentAsString());
+    }
+
+    @Test
+    void testUpdateBeerByIdValidation() throws Exception {
+        BeerDTO testBeer = BeerDTO.builder().build();
+
+        BeerDTO beer = beerServiceImpl.listBeers().get(0);
+
+        given(beerService.updateBeerById(beer.getId(),testBeer)).willReturn(Optional.of(beer));
+
+        MvcResult mvcResult = mockMvc.perform(put(BeerController.BEER_PATH_WITH_ID,beer.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(testBeer))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.length()",is(6))).andReturn();
+
+        System.out.println(mvcResult.getResponse().getContentAsString());
     }
 }
