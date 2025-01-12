@@ -2,6 +2,7 @@ package learn.springframwork.spring6restmvc.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -11,11 +12,16 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ExceptionController {
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity handleNotFoundException() {
+    ResponseEntity handleNotFoundException() {
 
         System.out.println("In the Exception Handler");
 
         return new ResponseEntity(HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    ResponseEntity handleBindErrors(MethodArgumentNotValidException exception) {
+        return ResponseEntity.badRequest().body(exception.getBindingResult().getFieldErrors());
     }
 
 }
