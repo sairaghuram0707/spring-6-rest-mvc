@@ -162,4 +162,18 @@ class BeerControllerTest {
         mockMvc.perform(get(BeerController.BEER_PATH_WITH_ID,UUID.randomUUID().toString()))
                 .andExpect(status().isNotFound());
     }
+
+    @Test
+    void testcreateNewNullBeer() throws Exception {
+
+        BeerDTO testBeer = BeerDTO.builder().build();
+
+        given(beerService.addBeer(any(BeerDTO.class))).willReturn(beerServiceImpl.listBeers().get(0));
+
+        mockMvc.perform(post(BeerController.BEER_PATH)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(testBeer)))
+                .andExpect(status().isBadRequest());
+    }
 }
