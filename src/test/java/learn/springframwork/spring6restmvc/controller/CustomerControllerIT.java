@@ -99,7 +99,7 @@ class CustomerControllerIT {
         customerDTO.setVersion(null);
         customerDTO.setCustomerName(CUSTOMER_NAME);
 
-        ResponseEntity responseEntity = customerController.updateCustomer(customerDTO,customer.getId());
+        ResponseEntity<CustomerDTO> responseEntity = customerController.updateCustomer(customerDTO,customer.getId());
 
         assertThat(responseEntity).isNotNull();
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
@@ -123,7 +123,7 @@ class CustomerControllerIT {
     void deleteCustomerByIdFound() {
         Customer customer = customerRepository.findAll().get(0);
 
-        ResponseEntity responseEntity = customerController.deleteCustomer(customer.getId());
+        ResponseEntity<CustomerDTO> responseEntity = customerController.deleteCustomer(customer.getId());
 
         assertThat(customerRepository.findById(customer.getId())).isEmpty();
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
@@ -140,7 +140,7 @@ class CustomerControllerIT {
         customerDTO.setVersion(null);
         customerDTO.setCustomerName(CUSTOMER_NAME);
 
-        ResponseEntity responseEntity = customerController.patchCustomer(customerDTO,customer.getId());
+        ResponseEntity<CustomerDTO> responseEntity = customerController.patchCustomer(customerDTO,customer.getId());
 
         assertThat(responseEntity).isNotNull();
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);

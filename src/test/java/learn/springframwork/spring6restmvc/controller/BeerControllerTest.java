@@ -138,6 +138,14 @@ class BeerControllerTest {
     }
 
     @Test
+    void testDeleteBeerFailed() throws Exception {
+        given(beerService.deleteBeerById(UUID.randomUUID())).willReturn(false);
+
+        mockMvc.perform(delete(BeerController.BEER_PATH_WITH_ID,UUID.randomUUID().toString()))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     void testPatchBeer() throws Exception {
         BeerDTO beer = beerServiceImpl.listBeers().get(0);
 
