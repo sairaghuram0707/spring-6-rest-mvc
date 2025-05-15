@@ -11,7 +11,6 @@ import org.hibernate.annotations.UuidGenerator;
 import org.hibernate.type.SqlTypes;
 
 import java.math.BigDecimal;
-import java.sql.SQLType;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -24,10 +23,12 @@ import java.util.UUID;
 public class Beer {
 
     @Id
-    @GeneratedValue(generator = "UUID")
+    // Primary key for the Entity
+    @GeneratedValue
     @UuidGenerator
     @JdbcTypeCode(SqlTypes.CHAR)
-    @Column(length = 36, columnDefinition = "varchar(36)", nullable = false, updatable = false)
+    // Column Properties and constraints for DB
+    @Column(name="id", length = 36, columnDefinition = "varchar(36)", nullable = false, updatable = false)
     private UUID id;
 
     @Version

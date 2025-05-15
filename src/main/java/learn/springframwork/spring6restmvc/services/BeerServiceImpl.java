@@ -1,6 +1,5 @@
 package learn.springframwork.spring6restmvc.services;
 
-import learn.springframwork.spring6restmvc.entities.Beer;
 import learn.springframwork.spring6restmvc.model.BeerDTO;
 import learn.springframwork.spring6restmvc.model.BeerStyle;
 import lombok.extern.slf4j.Slf4j;

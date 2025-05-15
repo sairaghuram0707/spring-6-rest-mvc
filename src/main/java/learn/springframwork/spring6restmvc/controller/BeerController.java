@@ -41,7 +41,8 @@ public class BeerController {
 
         log.debug("Controller - get the beer by ID - 56688");
 
-        return beerService.getBeerById(beerId).orElseThrow(NotFoundException::new);
+        // orElseThrow is expecting a supplier of a new instance (NotFoundException::new).
+        return beerService.getBeerById(beerId).orElseThrow(()-> new NotFoundException());
     }
 
     @PostMapping(BEER_PATH)

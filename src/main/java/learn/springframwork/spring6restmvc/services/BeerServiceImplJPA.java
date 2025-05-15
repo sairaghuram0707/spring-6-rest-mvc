@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Primary
@@ -26,14 +25,13 @@ public class BeerServiceImplJPA implements BeerService {
         return beerRepository.findAll()
                 .stream()
                 .map(beerMapper::beerToBeerDTO)
-                .collect(Collectors.toList());
-                //.toList();
+//                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
     public Optional<BeerDTO> getBeerById(UUID id) {
-        return Optional.ofNullable(beerMapper.beerToBeerDTO(beerRepository.findById(id)
-                .orElse(null)));
+        return Optional.ofNullable(beerMapper.beerToBeerDTO(beerRepository.findById(id).orElse(null)));
     }
 
     @Override
