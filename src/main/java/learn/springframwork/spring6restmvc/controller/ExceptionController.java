@@ -28,8 +28,8 @@ public class ExceptionController {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     ResponseEntity handleBindErrors(MethodArgumentNotValidException exception) {
 
-        // Formatting the Error for beeter understanding.
-        List errorList = exception.getFieldErrors().stream()
+        // Formatting the Error for better understanding.
+        List<Map<String, String>> errorList = exception.getFieldErrors().stream()
                 .map(fieldError -> {
                    Map<String, String> errorMap = new HashMap<>();
                    errorMap.put(fieldError.getField(), fieldError.getDefaultMessage());
