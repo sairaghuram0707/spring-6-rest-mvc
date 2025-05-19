@@ -96,9 +96,9 @@ class CustomerControllerTest {
         given(customerService.updateCustomerById(any(),any(UUID.class))).willReturn(Optional.of(testCustomer));
 
         mockMvc.perform(put(CustomerController.CUSTOMER_PATH_ID,testCustomer.getId())
-                .content(objectMapper.writeValueAsString(testCustomer))
                 .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(testCustomer)))
                 .andExpect(status().isNoContent());
 
         // Stub for the Customer Service sent

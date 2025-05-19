@@ -14,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.assertj.MvcTestResult;
 
 import java.util.*;
 
@@ -89,7 +88,7 @@ class BeerControllerTest {
         // Sending Object in request
         BeerDTO beer = beerServiceImpl.listBeers().get(0);
 
-        // Similar to what the service returns to thr controller
+        // Similar to what the service returns to the controller
         given(beerService.addBeer(any(BeerDTO.class))).willReturn(beerServiceImpl.listBeers().get(1));
 
         mockMvc.perform(post(BeerController.BEER_PATH)
@@ -139,6 +138,14 @@ class BeerControllerTest {
     }
 
     @Test
+    void testDeleteBeerFailed() throws Exception {
+        given(beerService.deleteBeerById(UUID.randomUUID())).willReturn(false);
+
+        mockMvc.perform(delete(BeerController.BEER_PATH_WITH_ID,UUID.randomUUID().toString()))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     void testPatchBeer() throws Exception {
         BeerDTO beer = beerServiceImpl.listBeers().get(0);
 
@@ -166,7 +173,7 @@ class BeerControllerTest {
     }
 
     @Test
-    void testcreateNewNullBeer() throws Exception {
+    void testCreateNewNullBeer() throws Exception {
 
         BeerDTO testBeer = BeerDTO.builder().build();
 

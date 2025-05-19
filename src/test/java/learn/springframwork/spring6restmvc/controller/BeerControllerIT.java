@@ -142,7 +142,7 @@ class BeerControllerIT {
         beerDTO.setId(null);
         beerDTO.setVersion(null);
 
-        ResponseEntity responseEntity = beerController.updateById(beer.getId(), beerDTO);
+        ResponseEntity<BeerDTO> responseEntity = beerController.updateById(beer.getId(), beerDTO);
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
         assertThat(beerRepository.findById(beer.getId()).get().getBeerName()).isEqualTo(beerName);
@@ -164,7 +164,7 @@ class BeerControllerIT {
     @Test
     void deleteBeerById() {
         Beer beer = beerRepository.findAll().get(0);
-        ResponseEntity responseEntity = beerController.deleteById(beer.getId());
+        ResponseEntity<BeerDTO> responseEntity = beerController.deleteById(beer.getId());
 
         assertThat(beerRepository.findById(beer.getId())).isEmpty();
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
